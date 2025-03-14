@@ -92,6 +92,8 @@ add_subdirectory(dependencies/tiny-cuda-nn)
 
 set(CMAKE_CUDA_ARCHITECTURES ${TCNN_CUDA_ARCHITECTURES})
 
+# set(TCNN_CUDA_ARCHITECTURES 89)
+
 if (NGP_BUILD_WITH_GUI)
 	find_package(Vulkan)
 	if (Vulkan_FOUND AND NGP_BUILD_WITH_VULKAN)

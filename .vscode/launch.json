@@ -1,0 +1,50 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "colmap2ingp",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/colmap2nerf.py",
+            "pythonPath":"/home/zhaoyibin/anaconda3/envs/ngp/bin/python",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": ["--out","data/2dgs_data/tum/rgbd_dataset_freiburg1_desk_colmap/transforms.json",
+                    "--images","data/2dgs_data/tum/rgbd_dataset_freiburg1_desk_colmap/images/",
+                    "--text","data/2dgs_data/tum/rgbd_dataset_freiburg1_desk_colmap/sparse/gt",
+                    "--keep_colmap_coords"
+                ]
+            // "cwd": "${workspaceFolder}/taichi_decoupled"
+        },
+        {
+            "name": "ngp2colmap",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/zyb_test/ngp2colmap.py",
+            "pythonPath":"/home/zhaoyibin/anaconda3/envs/ngp/bin/python",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": []
+            // "cwd": "${workspaceFolder}/taichi_decoupled"
+        },
+        {
+            "name": "run",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/run.py",
+            "pythonPath":"/home/zhaoyibin/anaconda3/envs/ngp/bin/python",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": ["--mode","nerf",
+                    "--scene","./transforms.json",
+                    "--save_mesh","./output/desk.ply",
+                    "--n_steps","3000",
+                    "--gui",
+                ]
+            // "cwd": "${workspaceFolder}/taichi_decoupled"
+        }
+    ]
+}

@@ -37,7 +37,7 @@ def parse_args():
 	parser.add_argument("--colmap_camera_params", default="", help="Intrinsic parameters, depending on the chosen model. Format: fx,fy,cx,cy,dist")
 	parser.add_argument("--images", default="images", help="Input path to the images.")
 	parser.add_argument("--text", default="colmap_text", help="Input path to the colmap text files (set automatically if --run_colmap is used).")
-	parser.add_argument("--aabb_scale", default=32, choices=["1", "2", "4", "8", "16", "32", "64", "128"], help="Large scene scale factor. 1=scene fits in unit cube; power of 2 up to 128")
+	parser.add_argument("--aabb_scale", default=1, choices=["1", "2", "4", "8", "16", "32", "64", "128"], help="Large scene scale factor. 1=scene fits in unit cube; power of 2 up to 128")
 	parser.add_argument("--skip_early", default=0, help="Skip this many images from the start.")
 	parser.add_argument("--keep_colmap_coords", action="store_true", help="Keep transforms.json in COLMAP's original frame of reference (this will avoid reorienting and repositioning the scene for preview and rendering).")
 	parser.add_argument("--out", default="transforms.json", help="Output JSON file path.")
@@ -327,6 +327,8 @@ if __name__ == "__main__":
 		up = np.zeros(3)
 		for line in f:
 			line = line.strip()
+			if line == "":
+				continue
 			if line[0] == "#":
 				continue
 			i = i + 1
@@ -338,12 +340,17 @@ if __name__ == "__main__":
 				# why is this requireing a relitive path while using ^
 				image_rel = os.path.relpath(IMAGE_FOLDER)
 				name = str(f"./{image_rel}/{'_'.join(elems[9:])}")
-				b = sharpness(name)
+				try:
+					b = sharpness(name)
+				except:
+					print('test')
 				print(name, "sharpness=",b)
 				image_id = int(elems[0])
 				qvec = np.array(tuple(map(float, elems[1:5])))
 				tvec = np.array(tuple(map(float, elems[5:8])))
+				# R = qvec2rotmat(qvec)
 				R = qvec2rotmat(-qvec)
+				# zyb修改
 				t = tvec.reshape([3,1])
 				m = np.concatenate([np.concatenate([R, t], 1), bottom], 0)
 				c2w = np.linalg.inv(m)
@@ -398,16 +405,19 @@ if __name__ == "__main__":
 		if totw > 0.0:
 			totp /= totw
 		print(totp) # the cameras are looking at totp
-		for f in out["frames"]:
-			f["transform_matrix"][0:3,3] -= totp
+
+		# for f in out["frames"]:
+		# 	f["transform_matrix"][0:3,3] -= totp
+		# zyb手动屏蔽
 
 		avglen = 0.
 		for f in out["frames"]:
 			avglen += np.linalg.norm(f["transform_matrix"][0:3,3])
 		avglen /= nframes
 		print("avg camera distance from origin", avglen)
-		for f in out["frames"]:
-			f["transform_matrix"][0:3,3] *= 4.0 / avglen # scale to "nerf sized"
+		# for f in out["frames"]:
+		# 	f["transform_matrix"][0:3,3] *= 4.0 / avglen # scale to "nerf sized"
+		# zyb手动屏蔽
 
 	for f in out["frames"]:
 		f["transform_matrix"] = f["transform_matrix"].tolist()

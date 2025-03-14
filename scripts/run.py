@@ -7,6 +7,10 @@
 # and any modifications thereto.  Any use, reproduction, disclosure or
 # distribution of this software and related documentation without an express
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
+import sys
+pyngp_path = '/home/zhaoyibin/3DRE/instant-ngp/build'
+sys.path.append(pyngp_path)
+import pyngp as ngp # noqa
 
 import argparse
 import os
@@ -22,7 +26,6 @@ from scenes import *
 
 from tqdm import tqdm
 
-import pyngp as ngp # noqa
 
 def parse_args():
 	parser = argparse.ArgumentParser(description="Run instant neural graphics primitives with additional configuration & output options")
