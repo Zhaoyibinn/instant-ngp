@@ -315,6 +315,8 @@ if __name__ == "__main__":
 				"cy": camera["cy"],
 				"w": camera["w"],
 				"h": camera["h"],
+				"enable_depth_loading": True,
+				"integer_depth_scale": 5000,
 				"aabb_scale": AABB_SCALE,
 				"frames": [],
 			}
@@ -334,7 +336,8 @@ if __name__ == "__main__":
 			i = i + 1
 			if i < SKIP_EARLY*2:
 				continue
-			if  i % 2 == 1:
+			# if  i % 2 == 1:
+			if True:
 				elems=line.split(" ") # 1-4 is quat, 5-7 is trans, 9ff is filename (9, if filename contains no spaces)
 				#name = str(PurePosixPath(Path(IMAGE_FOLDER, elems[9])))
 				# why is this requireing a relitive path while using ^
@@ -361,8 +364,10 @@ if __name__ == "__main__":
 					c2w[2,:] *= -1 # flip whole world upside down
 
 					up += c2w[0:3,1]
+				
+				depth_name = name.replace("images","depth").replace(".png","_depth.png")
 
-				frame = {"file_path":name,"sharpness":b,"transform_matrix": c2w}
+				frame = {"depth_path":depth_name,"file_path":name,"sharpness":b,"transform_matrix": c2w}
 				if len(cameras) != 1:
 					frame.update(cameras[int(elems[8])])
 				out["frames"].append(frame)

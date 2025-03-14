@@ -13,7 +13,7 @@
 /*.so
 /*.so.*
 /*.exe
-/*.json
+# /*.json
 *.ingp
 *.msgpack
 *.training

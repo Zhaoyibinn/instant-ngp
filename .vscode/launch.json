@@ -41,7 +41,7 @@
             "args": ["--mode","nerf",
                     "--scene","./transforms.json",
                     "--save_mesh","./output/desk.ply",
-                    "--n_steps","3000",
+                    "--n_steps","15000",
                     "--gui",
                 ]
             // "cwd": "${workspaceFolder}/taichi_decoupled"

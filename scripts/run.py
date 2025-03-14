@@ -198,6 +198,7 @@ if __name__ == "__main__":
 				if testbed.training_step < old_training_step or old_training_step == 0:
 					old_training_step = 0
 					t.reset()
+					
 
 				now = time.monotonic()
 				if now - tqdm_last_update > 0.1:
